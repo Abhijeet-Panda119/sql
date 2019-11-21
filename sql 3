@@ -1,0 +1,111 @@
+select ename, DATE_FORMAT(hiredate, "%M %d %Y") from emp;
+select ename,sal, 
+case
+	when sal >1500 then "just sal"
+	when sal =1500 then "On target"
+	else "Below 1500"
+End as salaries
+from emp;
+select dayofweek(hiredate) FROM emp;
+SELECT ename,length(ename) from emp;
+SELECT count(ename) from emp where job = "MANAGER";
+select * from emp where sal < 1000 order by sal;
+select * from emp order by sal asc;
+select empno, ename, deptno from emp order by deptno asc, empno desc;
+select empno, ename,sal,deptno from emp where deptno = 10 order by sal asc;
+select * from emp where sal < 3500;
+select empno, ename,sal from emp where hiredate < "1981-04-01";
+select ename,sal, (sal*12) annual_sal from emp where (sal*12) < 25000 order by sal asc;
+select empno, ename, (sal*12) annual_sal, (sal*30) daily_sal from emp order by (sal*12) ASC;
+select empno, ename, hiredate, CURRENT_DATE, (year(CURRENT_DATE) - year(hiredate)) Experience from emp order by (year(CURRENT_DATE) - year(hiredate)) asc;
+select ename, (year(CURRENT_DATE) - year(hiredate)) Experience from emp where (year(CURRENT_DATE) - year(hiredate)) >10;
+
+select * from emp where month(hiredate) = 1;
+select * from emp where monthname(hiredate) like "%A%";
+select * from emp where monthname(hiredate) like "_A%";
+select * from emp where month(hiredate) = 1 and sal BETWEEN 1500 and 4000;
+select DISTINCT(job), deptno from emp where deptno IN (20,30) order by job;
+select ename,mgr, (year(CURRENT_DATE) - year(hiredate)) Experience from emp where mgr is not null and mgr like "7%" and mgr not like "%9%" and year(hiredate) < 1983;
+select * from emp where job in ("MANAGER","ANALYST") and sal BETWEEN 2000 and 5000 and comm is null;
+select ename, (year(CURRENT_DATE) - year(hiredate)) Experience from emp where ename = "MILLER";
+select DISTINCT(dname) from dept right join emp on dept.deptno = emp.deptno;
+select dname, ename from dept right join emp on dept.deptno = emp.deptno where emp.deptno IN (20,30);
+
+select max(sal), min(sal) from emp;
+select max(sal), min(sal), deptno from emp group by deptno;
+select * from emp where sal < 1000 and job = "CLERK";
+select count(*) from emp group by deptno;
+select COUNT(ename) Employees,mgr from emp GROUP by mgr order by mgr asc;
+select COUNT(ename) Employees,Max(sal),job from emp GROUP by job;
+
+select ename,sal,deptno from emp where (sal, deptno) IN (select Max(Sal), deptno from emp group by deptno);
+select COUNT(ename), deptno from emp group by deptno having COUNT(ename)>3;
+select COUNT(ename),dname from emp e join dept d on e.deptno = d.deptno group by dname having COUNT(ename)>2;
+select AVG(sal) AVG_SAL, AVG(sal+COALESCE(comm,0)) AVG_TOTAL_Renumeration, job from emp group by job;
+select * from emp where (sal,job) IN (select Min(sal), job from emp group by job) order by job;
+select * from emp where (sal,job) IN (select Max(sal), job from emp group by job) order by sal desc;
+select MAX(year(hiredate)) Recent_Hire,deptno from emp group by deptno; ----------add order by hiredate in this query
+select ename, sal, deptno from emp where (sal,deptno) in (select MAX(sal),deptno from emp group by deptno having MAX(sal)>AVG(sal)) order by deptno;
+
+select count(ename), AVG(sal), deptno,job from emp group by deptno,job;
+select MAX(sal),job from emp group by job having job <> "PRESIDENT";
+select * from emp where empno IN (select DISTINCT mgr from emp where mgr is not null);
+select ename, empno, job, hiredate, (year(CURRENT_DATE) - year(hiredate)) Experience from emp where empno IN (select DISTINCT mgr from emp where mgr is not null);
+
+select empno, ename, job, mgr, hiredate, sal, dname, loc from emp e left join dept d on e.deptno=d.deptno where job in ("MANAGER", "ANALYST", "SALESMAN") and dname not like "OP%" and dname not like "%S" and job like "%A%" and year(hiredate) = 1981 and month(hiredate) not in (3,9) and sal not like "%00.%" order by job asc;
+select * from emp where sal > (select sal from emp where ename = "BLAKE");
+select * from emp where job = (select job from emp where ename = "ALLEN");
+select * from emp where(year(CURRENT_DATE) - year(hiredate)) > (select (year(CURRENT_DATE) - year(hiredate)) King_exp from emp where ename = "KING");
+select * from emp where deptno=20 and job IN (select job from emp where deptno = 10);
+select * from emp where sal IN (select sal from emp where ename in ("FORD","SMITH")) and ename not in ("FORD","SMITH") order by sal desc;
+select * from emp where job IN (select job from emp where ename = "MILLER") or sal > (select sal from emp where ename = "ALLEN");
+select * from emp where sal > (select sum(sal+COALESCE(comm,0)) from emp where job = "SALESMAN"); -------------no data--------------
+select * from emp e left join dept d on e.deptno=d.deptno where (year(CURRENT_DATE)-year(hiredate)) > (select (year(CURRENT_DATE)-year(hiredate)) from emp where ename = "BLAKE") and loc in ("CHICAGO","BOSTON"); ----------------no date--------------
+select ename, sal, job, hiredate, dname from emp e left join dept d on e.deptno=d.deptno where job in ("ANALYST","SALESMAN") and dname in ("ACCOUNTING","RESEARCH") and sal > (select sal from emp where ename =  "ALLEN") and (year(CURRENT_DATE)-year(hiredate))>(select year(CURRENT_DATE)-year(hiredate) smith_exp from emp where ename = "SMITH");---------Recheck---------
+select * from emp where job IN (select job from emp where ename IN ("SMITH","ALLEN"));
+select ename,job from emp where deptno=10 and job not in (select job from emp where deptno = 20);
+select * from emp where sal IN (select MAX(sal + COALESCE(comm,0)) from emp);
+select * from emp where sal IN (select MAX(sal+COALESCE(comm,0)) from emp e left join dept d on e.deptno=d.deptno where dname like "SALES");
+select * from emp where hiredate IN (select max(hiredate) from emp e join dept d on e.deptno=d.deptno where job = "SALESMAN" and loc = "CHICAGO");
+select * from emp where empno IN (select mgr from emp where hiredate IN (select Max(hiredate) from emp));
+select * from emp where deptno=10 and job != "PRESIDENT" and sal > (select Max(sal) from emp e join dept d on e.deptno=d.deptno where loc = "CHICAGO" and job not in ("MANAGER","SALESMAN"));
+select * from emp where hiredate IN (select MIN(hiredate) from emp where year(hiredate) = 1981);
+select * from emp where job IN (select job from emp where hiredate IN (select MIN(hiredate) from emp where year(hiredate)=1981));
+select * from emp where hiredate in (select MIN(hiredate) from emp where job in ("SALESMAN","CLERK"));
+select * from emp where deptno = 20 and sal > (select AVG(sal) from emp where deptno = 10);
+select * from  emp where mgr IN (select empno from emp where ename = "JONES");
+select * from emp where empno IN (select empno from emp e join dept d on e.deptno = d.deptno where dname NOT like "SALES");
+select ename, job, dname, loc from emp e join dept d on e.deptno=d.deptno where job IN ("MANAGER");
+
+select * from emp where job IN ("MANAGER", "PRESIDENT") and sal > (select avg(sal) from emp where job not like "MANAGER");
+select ename, sal, comm from emp where sal >= ALL (select (sal+COALESCE(comm,0)) from emp);
+select avg(sal), ename, dname from emp e join dept d on e.deptno=d.deptno group by ename,dname;
+
+select * from emp where mgr is not null and empno IN (select mgr from emp);
+select * from emp where deptno not in (select d.deptno from emp e join dept d on e.deptno=d.deptno);-------------------no data-----------------
+select ename, (sal+COALESCE(comm,0)), comm, sal from emp where sal = (select max(sal) from emp); 
+select dname from emp e join dept d on e.deptno=d.deptno group by dname order by COUNT(ename) desc limit 1;
+select COUNT(*) from emp where empno IN (select mgr from emp);
+
+
+select dname from emp e join dept d on e.deptno=d.deptno group by dname having count(*) > (select avg(counts) from (select Count(*) as counts from emp e join dept d on e.deptno=d.deptno group by dname) as counts);
+
+select * from emp where mgr IN (select empno from emp where ename = "BLAKE");
+select * from emp where empno in (select mgr from emp where ename = "JONES") UNION select * from emp where mgr in (select empno from emp where ename = "JONES"); 
+select job from emp where year(hiredate) IN (1983,1984) and  month(hiredate) < 6;----no data------
+select e.* from emp e join emp m on m.empno = e.mgr where  year(e.hiredate) > year(m.hiredate); 
+select ename, job from emp where (sal+COALESCE(comm,0)) in (select max(sal+COALESCE(comm,0)) from emp);
+select ename,job, sal from emp where deptno != 10 and (job, sal) IN (select job, sal from emp where deptno = 10);-----no data-----
+select deptno, ename, job, sal, (sal+COALESCE(comm,0)) from emp where job = "salesman"order by (sal+COALESCE(comm,0)) desc;
+
+select avg(sal) avg_sal,deptno from emp GROUP by deptno order by deptno;
+select avg(sal) avg_sal,deptno from emp GROUP by deptno order by deptno limit 1;
+select * from emp where job in (select job from emp where ename = "SMITH");
+select * from emp where job in (select job from emp where ename ="ALLEN") or sal > (select sal from emp where ename = "ALLEN");
+repeat
+select * from emp where sal > (select sal from emp where ename = "BLAKE");
+select * from emp where deptno = 10 and  sal > (select sal from emp where ename = "ALLEN");
+select * from emp where hiredate < (select hiredate from emp where ename ="KING") and hiredate > (select hiredate from emp where ename = "SMITH");
+select * from emp where job > (select job from emp where ename = "MILLER");
+select * from emp e join dept d on e.deptno=d.deptno where loc in ("DALLAS","CHICAGO") and job IN (select job from emp where ename="ADAMS") or hiredate < (select hiredate from emp where ename = "SMITH");
+select * from emp where sal in (select sal from emp where ename in ("FORD","BLAKE"));
