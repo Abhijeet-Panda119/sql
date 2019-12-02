@@ -17,7 +17,7 @@ select * from emp where month(hiredate) = 12;
 select * from emp where ename like "%A%";
 select * from emp where sal like "%10%" or sal like "%20%" or sal like "%30%";
 select * from emp where year(hiredate) IN (select (sal*0.10) from emp); -----No result bcz no data
-
+select concat(lower(substring(ename,1,(length(ename)/2))),upper(substring(ename,length(ename),length(ename)/2))) from emp;--------------Partially correct----------
 select * from emp where (year(hiredate)+20) > 1989;
 select * from emp order by sal asc;
 select * from emp order by deptno asc , job desc;
