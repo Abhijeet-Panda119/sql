@@ -1,0 +1,119 @@
+96 - select ename,sal, 
+      case
+	  when sal >1500 then "just sal"
+	  when sal =1500 then "On target"
+	  else "Below 1500"
+     End as salaries
+     from emp;
+	 
+206 -(i) CREATE TABLE EMPLOYEE (
+    EmployeeID int,
+    EmployeeName varchar(255),
+    Street varchar(255),
+    City varchar(255)
+    );
+	
+	(ii) CREATE TABLE COMPANY (
+    CompanyID int,
+    CompanyName varchar(255),
+    City varchar(255)
+    );
+	
+	(iii) CREATE TABLE WORKS (
+    EmployeeID varchar(255),
+    CompanyID varchar(255),
+    Salary int
+    );
+	
+	(iv) CREATE TABLE MANAGES (
+    EmployeeID varchar(255),
+    ManagerID varchar(255)
+    );
+	
+243 - CREATE SEQUENCE seq_1
+	  START WITH 1
+	  INCREMENT BY 1
+	  MAXVALUE 1000
+	  CYCLE;
+	  
+244 - CREATE SEQUENCE seq_2
+	  START WITH 1000
+	  INCREMENT BY 1
+	  MAXVALUE 9999
+	  NOCYCLE;
+	  
+	  
+	  
+	  
+248 -	create table panda_train.Member (
+    Member_id int,
+    Member_name varchar(30),
+    Member_address varchar(50),
+    Acc_Open_Date date,
+    Membership_type varchar(20),
+    Fees_paid int,
+    Max_Books_Allowed int,
+    Penalty_Amount decimal(7,2)
+    );
+	
+	create table Books (
+    Book_No int(6),
+    Book_name varchar(30),
+    Arthur_name varchar(30),
+    Cost decimal(7,2),
+    Category CHARACTER(4)
+    );
+	
+	create table Issue (
+    Lib_issue_id int(10),
+    Book_No int(6),
+    Member_id int(5),
+    Issue_date date,
+    Return_date date
+    );
+	
+251 - create table Member (
+    Member_id int,
+    Member_name varchar(30),
+    Member_address varchar(50),
+    Acc_Open_Date date,
+    Membership_type varchar(20),
+    Fees_paid int,
+    Max_Books_Allowed int,
+    Penalty_Amount decimal(7,2),
+    PRIMARY KEY(Member_id),
+    CONSTRAINT CHK_Member CHECK ( Membership_type IN ("Lifetime","Annual","Half Yearly","Quarterly"))
+    );
+	
+264 - create table Books (
+    Book_No int(6),
+    Book_name varchar(30) NOT NULL,
+    Arthur_name varchar(30),
+    Cost decimal(7,2),
+    Category CHARACTER(4),
+    PRIMARY KEY(Book_No),
+    CONSTRAINT ck_books CHECK (Category IN "Science", "Fiction", "Database", "RDBMS", "Others")
+    );
+	
+270 - create table Book101 (
+    Book_No int(6),
+    Book_name varchar(30) NOT NULL,
+    Arthur_name varchar(30),
+    Cost decimal(7,2),
+    Category CHARACTER(4),
+    PRIMARY KEY(Book_No)
+    );
+	
+279 - create table Issue (
+    Lib_issue_id int(10),
+    Book_No int(6),
+    Member_id int(5),
+    Issue_date date,
+    Return_date date,
+    PRIMARY KEY(Lib_issue_id),
+    FOREIGN KEY (Book_No) REFERENCES Books(Book_No),
+    FOREIGN KEY (Member_id) REFERENCES panda_train.Member(Member_id)
+    );
+	
+
+	

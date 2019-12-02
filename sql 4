@@ -1,0 +1,144 @@
+select * from emp where ((sal+COALESCE(comm,0))*12*(year(CURRENT_DATE)-year(hiredate))) in (select MAX((sal+COALESCE(comm,0))*12*(year(CURRENT_DATE)-year(hiredate))) from emp);
+select * from emp where hiredate IN (select max(hiredate) from emp where deptno = 30 group by deptno) limit 1;
+select * from emp where sal IN (select MAX(sal) from emp e join dept d on e.deptno=d.deptno where loc = "CHICAGO") and hiredate < (select hiredate from emp where hiredate In (select max(hiredate) from emp where job = "MANAGER"));
+select * from emp where sal IN (select MAX(sal) from emp where ename != "KING");
+select * from emp where empno IN (select mgr from emp);
+Repeat
+-------check extra page-------------
+INSERT INTO EMPLOYEE VALUES ("1234","PETER","New Jersey","NY"),("5678","JAKE","Old Town","Brooklyn"),("9857","AMY","China Town","Chicago"),("9087","TERRY","Laveile","Florida"),("3461","HOLT","Lebnon","Las vegas");-------------AND-------------INSERT INTO COMPANY VALUES ("8786","ROKO","BLR"),("9087","NAKO","Kolkata"),("7843","MAKO","Mumbai"),("3056","SAKO","CHENNAI"),("4509","PAKO","BBI");
+INSERT INTO WORKS VALUES ("2222","6790","6700"),("3333","9834","5000"),("4444","3478","9000"),("5555","1098","2300"),("6666","6721","5289");-----------------------AND-------------------------------INSERT INTO MANAGES VALUES ("678709","671819"),("670956","965231"),("892365","719269"),("348798","761209"),("569802","782376");
+ALTER TABLE COMPANY ADD company_address varchar(255);
+ALTER TABLE COMPANY RENAME COLUMN company_address TO address;
+ALTER TABLE WORKS MODIFY COLUMN Salary decimal(8,2);
+SELECT * FROM COMPANY;------------AND-----------------SELECT * FROM EMPLOYEE;--------------AND-----------------SELECT * FROM WORKS;-------------AND-----------------SELECT * FROM MANAGES;
+SELECT m.empno, m.ename, e.ename FROM emp e join emp m on e.empno=m.mgr WHERE m.empno not in (select e.mgr from emp);
+select e.*,dname,loc from emp e join dept d on e.deptno=d.deptno WHERE dname in ("ACCOUNTING","RESEARCH") ORDER BY deptno;
+SELECT empno,ename,sal,dname from emp e join dept d on e.deptno=d.deptno where job in ("MANAGER","ANALYST") and loc in ("NEW YORK","DALLAS") and (year(CURRENT_DATE)-year(hiredate)) > 7 and comm is null order by loc;
+select e.empno,e.ename,e.sal,d.dname,d.loc,e.deptno,e.job from emp e join dept d on e.deptno=d.deptno WHERE empno like "__7%" or empno like "__8%" and (sal*12)>28000 and sal not in (3000,2800) and job = "MANAGER" and (loc = "CHICAGO" OR dname = "ACCOUNTING") order by deptno asc, job desc;
+------no ques--------------
+select * from emp order by job asc;
+select empno,ename,sal,dname,job,(year(CURRENT_DATE)-year(hiredate)) Experience ,(sal*12) Annual_sal,e.deptno from emp e join dept d on e.deptno=d.deptno WHERE e.deptno in (10,20);
+select d.*,ename,empno from dept d left join emp e on d.deptno=e.deptno;
+
+select dname, d.deptno,loc,Count(ename) from dept d left join emp e on d.deptno=e.deptno group by dname,loc,d.deptno HAVING count(ename) >2;
+select e.*, dname from emp e left join dept d on e.deptno=d.deptno;
+select ename, dname,sal,comm from emp e join dept d on e.deptno= d.deptno WHERE sal BETWEEN 2000 and 5000 and loc = "CHICAGO";
+
+select * from emp WHERE mgr in (select empno from emp WHERE ename = "JONES");---------------re check---------------------
+select ename,sal from emp WHERE sal = (select Max(sal) from emp WHERE job = (select job from emp WHERE ename="FORD")) and ename ="FORD";
+select ename,job,dname,sal from emp e join dept d on e.deptno=d.deptno GROUP by dname,ename,job,sal;
+select ename,job,dname,sal from emp e join dept d on e.deptno=d.deptno WHERE job != "CLERKS" order by sal desc;
+select ename,job,(sal*12) Annual_sal,e.deptno,dname from emp e left join dept d on e.deptno=d.deptno WHERE (sal*12)>36000 or job !="CLERK";
+select e.ename,e.empno, m.ename, m.empno from emp e join emp m on e.mgr=m.empno;
+select e.ename,e.sal, m.ename, m.sal from emp e join emp m on e.mgr=m.empno WHERE e.sal > m.sal;
+select empno,ename,e.deptno,loc from emp e join dept d on e.deptno=d.deptno;
+select empno,ename,loc,dname from emp e join dept d on e.deptno=d.deptno WHERE e.deptno IN (10,20);
+select empno,ename,sal,loc from emp e join dept d on e.deptno=d.deptno WHERE loc IN ("CHICAGO","DALLAS") and (year(CURRENT_DATE)-year(hiredate))>6 ;
+select * from emp e join dept d on e.deptno=d.deptno WHERE loc in ("DALLAS","NEW YORK")and year(hiredate)=1981 and sal between 2000 and 5000;
+---------Repeat--------------
+select * from emp e join dept d on e.deptno=d.deptno WHERE loc in ("CHICAGO");
+select * from emp e join dept d on e.deptno=d.deptno WHERE loc in ("CHICAGO") and job in ("SALESMAN","ANALYST");
+select d.loc,e.job from emp e join dept d on e.deptno=d.deptno WHERE dname = "Accounting" OR loc in ("DALLAS","CHICAGO") and job in ("MANAGER","ANALYST","PRESIDENT") and (year(CURRENT_DATE)-year(hiredate))>6;
+select * from emp e join dept d on e.deptno=d.deptno WHERE dname in ("RESEARCH","OPERATIONS") and JOB in ("ANALYST") and year(hiredate) > 1987 and ename not in ("MILLER","ALLEN");----NO DATA---------------
+SELECT empno,ename,loc,sal,dname,loc from emp e join dept d on e.deptno=d.deptno WHERE e.deptno IN (select deptno from emp WHERE ename = "KING");
+-------check extra page-------------
+-------check extra page-------------
+select * from emp WHERE sal is not null;
+select * from emp e join emp m on e.mgr=m.empno WHERE e.sal < m.sal;
+create index inx1 on emp(ename);
+-------check extra page-------------
+select * from Books;---AND-----------select * from panda_train.Member;---------AND-------select * from Issue;
+DROP TABLE panda_train.Member;
+-------check extra page-------------
+ALTER TABLE panda_train.Member MODIFY Member_name CHARACTER(30);
+ALTER TABLE Issue ADD Reference CHARACTER(30);
+ALTER TABLE Issue drop COLUMN Reference;
+ALTER TABLE Issue RENAME TO Lib_Issue;
+INSERT into panda_train.Member VALUES (1,"Richa Sharma","Pune","2012-12-10","Lifetime",9500,5,50),(2,"Garima Sen","Pune","2019-12-24","Annual",1000,3,Null);
+----Repeat----------------
+ALTER TABLE panda_train.Member MODIFY Member_name varchar(20);
+INSERT into panda_train.Member VALUES (3,"Jake Peralta","Brooklyn","2009-09-09","Lifetime",10000,110,50);-------------------its accepted bcz there is no limit on integer-------
+------not understandable--------------
+ALTER table panda_train.Member CONSTRAINT ck_member, CHECK ( Max_Books_Allowed <100 and Penalty_Amount <1001);
+-------Repeat-------------
+drop table Books;
+-------check extra page-------------
+-------No Ques-------------
+-------No Ques-------------
+-------No Ques-------------
+INSERT into Books VALUES (101,"Let us C","Denis Ritchie",450,"System"),(102,"Oracle Complete Ref","Loni",550,"Database"),(103,"Mastering SQL","Loni",250,"Database"),(104,"PL SQL-Ref","Scott Urman",750,"Database");
+--------Repeat-----------
+-------check extra page-------------
+Insert into Book101 select * from Books;
+-----------repeat------------
+select * from Book101;
+insert into Books VALUES(105,  "National Geographic", "Adis Scott", 1000,  "Science");
+DELETE FROM Books where Book_No = 105;
+UPDATE Books set cost = 300,Category = "RDBMS" WHERE Book_No =103;
+ALTER TABLE Lib_Issue RENAME to Issue;
+DROP TABLE Issue;
+-------check extra page-------------                                                                                                                                                                                                          
+INSERT into Issue VALUES (7001,101,1,"2012-12-10",null),(7002,102,2,"2012-12-25",null),(7003,104,1,"2012-01-15",null),(7004,101,1,"2012-07-04",null),(7005,104,2,"2012-11-12",null),(7006,101,3,"2012-02-18",null);
+---repeat------
+ALTER TABLE Issue DISABLE KEYS;------------AND-------------SET FOREIGN_KEY_CHECKS=0;
+INSERT into Issue VALUES (7007,103,4,"2012-12-10",null);-------- ERROR ::: cannot add or remove a child row
+ALTER TABLE Issue Enable KEYS;
+ALTER TABLE Issue Enable KEYS;------------AND-------------SET FOREIGN_KEY_CHECKS=1;
+DELETE FROM panda_train.Member where Member_id = 1;------ERROR::::  Cannot delete or update a parent row: a foreign key constraint fails
+UPDATE Issue set Return_date = (Issue_date+15) where Lib_issue_id IN (7004,7005);
+UPDATE panda_train.Member set Penalty_Amount = 100 where Member_name like "Garima%";
+------savepoint
+------savepoint
+------savepoint
+------savepoint
+------savepoint
+DROP table Member101;
+DROP table Book101;
+select * from panda_train.Member,--------and--------select * from Books;-----------and---------select * from Issue;
+select * from Books where Arthur_name Like "Loni%" and cost <600;
+select i.*,b.* from Issue i join Books b on i.Book_No=b.Book_No where Return_date is Null; 
+select * from Issue where Return_date is Null and Lib_issue_id not in (7005,7006);
+select * from Issue where Return_date is Null or (day(Issue_date)+30) < day(Return_date);
+select * from Books where Category = "Database" and cost between 500 and 750;
+select * from Books where Category IN ("Database","Science","Fiction","Management");
+select * from panda_train.Member where Penalty_Amount is not null order by Penalty_Amount desc;
+select * from Books order by cost desc, Category asc;
+select * from Books where Book_name like "%SQL%";
+select * from panda_train.Member where (Member_name like "R%" or Member_name like "S%") and Member_name like "%I%" ;
+select Lower(Book_name), Upper(Arthur_name) from Books order by Book_name desc;
+select Book_No,Lib_issue_id,Member_id,concat( dayname(Issue_date) , "," , monthname(Issue_date) , "," , day(Issue_date) , "," , year(Issue_date)) Issue_dt, concat(dayname(Return_date) , "," , monthname(Return_date) , "," , day(Return_date) , "," , year(Return_date)) Return_dt from Issue;
+select * from panda_train.Member where year(Acc_Open_Date) = 2012;
+select Lib_issue_id,Issue_date,Return_date,(day(Return_date)-day(Issue_date)) No_of_Days from Issue where Return_date is not null;
+select * from panda_train.Member order by Acc_Open_Date;
+select count(DISTINCT Book_No) from Issue where Member_id = 1;
+select SUM(Penalty_Amount) from panda_train.Member;
+select count(*) from panda_train.Member;
+select count(DISTINCT Book_No) from Issue;
+select AVG(Fees_paid) from panda_train.Member;
+select (month(Return_date)-month(Issue_date)) No_of_month from Issue;
+select Category, count(Book_name) No_of_books from Books group by Category;
+select Book_No, count(Lib_issue_id) from Issue group by Book_No order by count(Lib_issue_id) desc;
+select Max(Penalty_Amount), Min(Penalty_Amount), Sum(Penalty_Amount), AVG(Penalty_Amount) from panda_train.Member;
+select count(Book_no), Member_id from Issue group by Member_id having count(Book_no)>2;
+
+select monthname(Issue_date), count(Book_no) from Issue group by Issue_date order by count(Book_no) desc;
+select * from Books where Book_No not in (select i.Book_no from Books b join Issue i on b.Book_No=i.Book_No);
+select Member_id from Issue group by Member_id having count(Book_No)>1;
+
+select * from Issue where month(Issue_date) IN (7,12);
+select i.Book_No,Book_name,Issue_date from Issue i join Books b on i.Book_No=b.Book_No where month(Issue_date) = 12 and Category = "Database";
+select m.Member_id,Member_name,Count(Book_No) from panda_train.Member m join Issue i on m.Member_id=i.Member_id group by m.Member_id,Member_name order by Count(Book_No) desc;
+select b.Book_No,Book_name,Issue_date,Return_date from Books b join Issue i on b.Book_No=i.Book_No where Member_id IN (select Member_id from  panda_train.Member where Member_name="Richa Sharma");
+select * from panda_train.Member where Member_id IN (select DISTINCT Member_id from Issue WHERE Book_No is not null);
+select * from Issue i join panda_train.Member m on i.Member_id=m.Member_id WHERE i.Issue_date = m.Acc_Open_Date;
+select * from panda_train.Member WHERE Member_id Not In (select m.Member_id from panda_train.Member m join Issue i on m.Member_id=i.Member_id);
+select * from panda_train.Member WHERE Member_id in (select DISTINCT Member_id from Issue WHERE Book_no In (select Book_no from Issue i join panda_train.Member m on i.Member_id=m.Member_id WHERE Member_name like "Garima%")) and Member_name Not like "Garima%";
+select Book_name from Books b join Issue i on b.Book_No=i.Book_No WHERE (day(Issue_date)+30) < day(Return_date);
+select Arthur_name, Book_name from Books WHERE Arthur_name in (select Arthur_name from Books group by Arthur_name HAVING count(Book_name)>1);
+
+select sum(cost) from Books b join Issue i on b.Book_No=i.Book_No WHERE Return_date is null;
+select b.* from Books b join (select Book_No,count(Lib_issue_id) counts from Issue group by Book_No order by counts desc limit 1) c on b.Book_No=c.Book_No ;
+select count(DISTINCT Book_No) from Issue WHERE Member_id IN (select Member_id from panda_train.Member WHERE Membership_type = "Lifetime");
+select * from panda_train.Member WHERE Member_id in (select Member_id from Issue i join Books b on i.Book_No=b.Book_No WHERE Arthur_name = "Loni" and month(Issue_date) = 12);
+create view Books_details AS SELECT Lib_issue_id,Book_name,Member_name,Arthur_name,Issue_date from Books b join Issue i on b.Book_No=i.Book_No join panda_train.Member m on m.Member_id=m.Member_id WHERE b.category IN ("Database","RDBMS") and b.Cost between 500 and 750;
+create view AUTHORSnBOOKS AS SELECT Arthur_name, count(Book_name) from Books GROUP by Arthur_name;
