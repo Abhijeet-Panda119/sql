@@ -19,7 +19,7 @@ select ename,sal, (sal*12) annual_sal from emp where (sal*12) < 25000 order by s
 select empno, ename, (sal*12) annual_sal, (sal*30) daily_sal from emp order by (sal*12) ASC;
 select empno, ename, hiredate, CURRENT_DATE, (year(CURRENT_DATE) - year(hiredate)) Experience from emp order by (year(CURRENT_DATE) - year(hiredate)) asc;
 select ename, (year(CURRENT_DATE) - year(hiredate)) Experience from emp where (year(CURRENT_DATE) - year(hiredate)) >10;
-
+select empno,ename,(sal+COALESCE(comm,0)),(sal*0.30) TA,(sal*0.40) DA,(sal*0.50) HRA,sal as net_Salary from emp; ----------Re check------------------
 select * from emp where month(hiredate) = 1;
 select * from emp where monthname(hiredate) like "%A%";
 select * from emp where monthname(hiredate) like "_A%";
@@ -30,14 +30,14 @@ select * from emp where job in ("MANAGER","ANALYST") and sal BETWEEN 2000 and 50
 select ename, (year(CURRENT_DATE) - year(hiredate)) Experience from emp where ename = "MILLER";
 select DISTINCT(dname) from dept right join emp on dept.deptno = emp.deptno;
 select dname, ename from dept right join emp on dept.deptno = emp.deptno where emp.deptno IN (20,30);
-
+select avg(sal) AVG_Salary, dname from emp e join dept d on e.deptno=d.deptno group by dname;
 select max(sal), min(sal) from emp;
 select max(sal), min(sal), deptno from emp group by deptno;
 select * from emp where sal < 1000 and job = "CLERK";
 select count(*) from emp group by deptno;
 select COUNT(ename) Employees,mgr from emp GROUP by mgr order by mgr asc;
 select COUNT(ename) Employees,Max(sal),job from emp GROUP by job;
-
+select dname, job, COUNT(ename) from emp e join dept d on e.deptno=d.deptno group by dname,job having COUNT("CLERK")>1;
 select ename,sal,deptno from emp where (sal, deptno) IN (select Max(Sal), deptno from emp group by deptno);
 select COUNT(ename), deptno from emp group by deptno having COUNT(ename)>3;
 select COUNT(ename),dname from emp e join dept d on e.deptno = d.deptno group by dname having COUNT(ename)>2;
